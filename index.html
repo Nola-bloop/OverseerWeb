@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title id="page-title">Overseer</title>
+	<script defer src="./js/main.js"></script>
+
+	<link rel=stylesheet href="./css/main.css">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Allura&family=Cause:wght@100..900&family=Caveat:wght@400..700&family=Comic+Relief:wght@400;700&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Fredoka:wght@300..700&family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Great+Vibes&family=Indie+Flower&family=Kaushan+Script&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Lobster&family=Lora:ital,wght@0,400..700;1,400..700&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Satisfy&family=Shadows+Into+Light&display=swap" rel="stylesheet">
+</head>
+<body>
+	<!---------------------->
+	<header>
+		<!-- <div id="campaign-notifier">
+			<p id="campaign-notifier-text" class="fontfamily-lora">No selected campaign.</p>
+		</div> -->
+	</header>
+
+
+
+	<!---------------------->
+	<aside>
+		<div id="aside-content">
+			<p id="aside-title">Chapters</p>
+			<div class="chapter-group-container">
+				<div class="chapter-group">
+					<div class="chapter-group-header" onclick="selectElementsFromId(1)">
+						<p class="chapter-group-title" >Campaign Story</p>
+						<p class="chapter-group-arrow selectable-1">➤</p>
+					</div>
+					<div class="chapter-container selectable-1">
+						<div class="chapter">
+							<p class="chapter-title">Prologue</p>
+						</div>
+						<div class="chapter">
+							<p class="chapter-title">Chapter 1</p>
+						</div>
+						<div class="chapter">
+							<p class="chapter-title">Chapter 2</p>
+						</div>
+						<div class="chapter">
+							<p class="chapter-title">Chapter 3</p>
+						</div>
+						<div class="chapter">
+							<p class="chapter-title">Chapter 4</p>
+						</div>
+						<div class="chapter">
+							<p class="chapter-title">Chapter 5</p>
+						</div>
+						<div class="chapter">
+							<p class="chapter-title">Chapter 6</p>
+						</div>
+					</div>
+				</div>
+				<div class="chapter-group">
+					<div class="chapter-group-header" onclick="selectElementsFromId(2)">
+						<p class="chapter-group-title" >Lore & others</p>
+						<p class="chapter-group-arrow selectable-2">➤</p>
+					</div>
+					<div class="chapter-container selectable-2">
+						<div class="chapter">
+							<p class="chapter-title">Teasers</p>
+						</div>
+						<div class="chapter">
+							<p class="chapter-title">Stats</p>
+						</div>
+						<div class="chapter">
+							<p class="chapter-title">Visuals</p>
+						</div>
+						<div class="chapter">
+							<p class="chapter-title">OC Q&A</p>
+						</div>
+						<div class="chapter">
+							<p class="chapter-title">Drabbles</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<p id="aside-edit-button" class="editable-aside" onclick="toggleEditMode('aside')">🖋</p>
+		</div>
+		<div id="aside-button">
+			<p>➤</p>
+		</div>
+	</aside>
+
+
+
+	<!---------------------->
+	<article>
+		<h1>No campaign selected.</h1>
+	</article>
+
+
+
+	<!---------------------->
+	<footer>
+		
+	</footer>
+</body>
+</html>

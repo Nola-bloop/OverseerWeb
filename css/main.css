@@ -1,0 +1,183 @@
+:root{
+	--shadow-tone: #53383170;
+	--darker-tone: #533831FF;
+	--dark-tone-selected: #CC9D75FF;
+	--dark-tone: #ebb787FF;
+	--middle-tone: #fee3c6FF;
+	--light-tone: #fef7deFF;
+
+	--border-rad: 10px;
+
+	--aside-width: 15vw;
+}
+
+*{
+	margin: 0;
+	padding: 0;
+
+	font-optical-sizing: auto;
+	font-weight: 500;
+	font-style: normal;
+	font-family: "Fredoka", sans-serif;
+
+	color: var(--dark-tone);
+
+	transition: all;
+	transition-duration: 400ms;
+	animation-timing-function: ease-out;
+
+	user-select: none;
+
+	-ms-overflow-style: none;  /* IE and Edge */
+	scrollbar-width: none;  /* Firefox */
+}
+*::-webkit-scrollbar {
+ 	display: none;
+}
+body{
+	background-color: var(--middle-tone);
+	display: flex;
+	flex-direction: column;
+	header{
+		#campaign-notifier{
+			background-color: black;
+			#campaign-notifier-text{
+				text-align: center;
+				color: white;
+				font-size: 0.8em;
+				padding: 0.5vh;
+			}
+		}
+	}
+	aside{
+		display: flex;
+		align-items: center;
+		height: 100vh;
+		position: fixed;
+		top: 0;
+		left: calc(var(--aside-width) * -1);
+		#aside-button{
+			img{
+				width: 2vh;
+			}
+		}
+		#aside-content{
+			width: var(--aside-width);
+			min-width: fit-content;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			height: 100%;
+			
+
+			background-color: var(--middle-tone);
+			border-right: var(--dark-tone) dashed 3px;
+
+			#aside-title, #aside-edit-button{
+				font-size: 1.5em;
+				text-align: center;
+				width: 70%;
+				min-width: fit-content;
+				height: 1.5em;
+				align-content: center;
+				margin: var(--border-rad);
+
+				color: var(--darker-tone);
+				background-color: var(--dark-tone);
+				border-radius: var(--border-rad);
+			}
+			#aside-edit-button{
+				font-size: 1em;
+				cursor: pointer;
+
+				color: var(--light-tone);
+				box-shadow: var(--shadow-tone) 2px 3px 0px;
+			}
+			#aside-edit-button:hover{
+
+				background-color: var(--dark-tone-selected);
+				box-shadow: var(--shadow-tone) 0px 0px 0px;
+			}
+			#aside-edit-button.editing{
+				background-color: var(--dark-tone);
+				box-shadow: var(--shadow-tone) inset 1px 2px 0px;
+			}
+		}
+	}
+	aside:hover{
+		left:0;
+	}
+
+	article{
+		padding-left: 2vw;
+	}
+}
+
+/*font families*/
+.fontfamily-roboto{ font-family: "Roboto", sans-serif; }
+.fontfamily-nunito{ font-family: "Nunito", sans-serif; }
+.fontfamily-lora{ font-family: "Lora", serif; }
+.fontfamily-pt-serif{ font-family: "PT Serif", serif; }
+.fontfamily-baskerville{ font-family: "Libre Baskerville", serif; }
+.fontfamily-garamond{ font-family: "EB Garamond", serif; }
+.fontfamily-lobster{ font-family: "Lobster", sans-serif; }
+.fontfamily-satisfy{ font-family: "Satisfy", cursive; }
+.fontfamily-caveat{ font-family: "Caveat", cursive; }
+.fontfamily-shadows-into-light{ font-family: "Shadows Into Light", cursive; }
+.fontfamily-indie-flowers{ font-family: "Indie Flower", cursive; }
+.fontfamily-great-vibes{ font-family: "Great Vibes", cursive; }
+.fontfamily-cause{ font-family: "Cause", cursive; }
+.fontfamily-fredoka{ font-family: "Fredoka", sans-serif; }
+.fontfamily-google-code{ font-family: "Google Sans Code", monospace; }
+.fontfamily-kaushan{ font-family: "Kaushan Script", cursive; }
+.fontfamily-allura{ font-family: "Allura", cursive; }
+.fontfamily-comic-relief{ font-family: "Comic Relief", system-ui; }
+
+
+
+.fontcolor-light{ color: var(--light-tone)  }
+
+
+.chapter-group-container{
+	width: 100%;
+	.chapter-group{
+		.chapter-group-header{
+			display: flex;
+			justify-content: space-between;
+			margin-right: 15px;
+			.chapter-group-title{
+				font-size:1.2em;
+				text-align: left;
+				margin-left: 0.4em;
+				cursor: pointer;
+			}
+			.chapter-group-arrow{
+				transform: rotate(0deg);
+			}
+			.chapter-group-arrow.selected{
+				transform: rotate(90deg);
+			}
+		}
+		.chapter-container{
+			
+			max-height: 0px;
+			overflow: scroll;
+
+			background-color: var(--dark-tone);
+			box-shadow: var(--shadow-tone) inset 0px 0px 5px;
+			border-radius: var(--border-rad);
+			margin: 5px;
+
+			
+			*{color: var(--light-tone);}
+			.chapter{
+				margin-left: 1.2em;
+				padding: 5px;
+				cursor: pointer;
+			}
+		}
+		.chapter-container.selected{
+			max-height: 20vh;
+		}
+	}
+}	

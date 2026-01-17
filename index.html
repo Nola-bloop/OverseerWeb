@@ -4,6 +4,8 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title id="page-title">Overseer</title>
+
+	<script src="./js/test-values.js"></script>
 	<script defer src="./js/main.js"></script>
 
 	<link rel=stylesheet href="./css/main.css">
@@ -26,59 +28,10 @@
 	<aside>
 		<div id="aside-content">
 			<p id="aside-title">Chapters</p>
-			<div class="chapter-group-container">
-				<div class="chapter-group">
-					<div class="chapter-group-header" onclick="selectElementsFromId(1)">
-						<p class="chapter-group-title" >Campaign Story</p>
-						<p class="chapter-group-arrow selectable-1">➤</p>
-					</div>
-					<div class="chapter-container selectable-1">
-						<div class="chapter">
-							<p class="chapter-title">Prologue</p>
-						</div>
-						<div class="chapter">
-							<p class="chapter-title">Chapter 1</p>
-						</div>
-						<div class="chapter">
-							<p class="chapter-title">Chapter 2</p>
-						</div>
-						<div class="chapter">
-							<p class="chapter-title">Chapter 3</p>
-						</div>
-						<div class="chapter">
-							<p class="chapter-title">Chapter 4</p>
-						</div>
-						<div class="chapter">
-							<p class="chapter-title">Chapter 5</p>
-						</div>
-						<div class="chapter">
-							<p class="chapter-title">Chapter 6</p>
-						</div>
-					</div>
-				</div>
-				<div class="chapter-group">
-					<div class="chapter-group-header" onclick="selectElementsFromId(2)">
-						<p class="chapter-group-title" >Lore & others</p>
-						<p class="chapter-group-arrow selectable-2">➤</p>
-					</div>
-					<div class="chapter-container selectable-2">
-						<div class="chapter">
-							<p class="chapter-title">Teasers</p>
-						</div>
-						<div class="chapter">
-							<p class="chapter-title">Stats</p>
-						</div>
-						<div class="chapter">
-							<p class="chapter-title">Visuals</p>
-						</div>
-						<div class="chapter">
-							<p class="chapter-title">OC Q&A</p>
-						</div>
-						<div class="chapter">
-							<p class="chapter-title">Drabbles</p>
-						</div>
-					</div>
-				</div>
+			<div id="aside-chapter-group-container" class="chapter-group-container">
+
+				<!-- Where chapter groups and chapters will be added -->
+
 			</div>
 			<p id="aside-edit-button" class="editable-aside" onclick="toggleEditMode('aside')">🖋</p>
 		</div>
@@ -91,7 +44,10 @@
 
 	<!---------------------->
 	<article>
-		<h1>No campaign selected.</h1>
+		<h1><span class="campaign-name">No Campaign</span>, <span class="chapter-name">no chapter</span></h1>
+		<div id="reading-zone">
+			
+		</div>
 	</article>
 
 

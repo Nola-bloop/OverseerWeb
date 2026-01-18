@@ -38,7 +38,10 @@ const TEST_VALUES = [
 									player: 1
 								},
 								date_sent:"9/30/25",
-								thread: "main"
+								thread: {
+									id:0,
+									name:"main"
+								},
 							},
 							{
 								id:2,
@@ -52,7 +55,10 @@ const TEST_VALUES = [
 									player: 1
 								},
 								date_sent:"9/30/25",
-								thread: "main"
+								thread: {
+									id:0,
+									name:"main"
+								},
 							},
 						]
 					},

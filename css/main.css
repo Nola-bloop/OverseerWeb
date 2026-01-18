@@ -190,6 +190,7 @@ body{
 			display: flex;
 			justify-content: space-between;
 			margin-right: 15px;
+			
 			.chapter-group-title{
 				font-size:1.2em;
 				text-align: left;

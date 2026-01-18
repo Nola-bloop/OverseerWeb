@@ -138,6 +138,11 @@ function addMessage(message){
 }
 
 function refreshChapter(){
+	let chapterTitles = document.getElementsByClassName("chapter-name")
+	for(let i = 0; i < chapterTitles.length; i++){
+		chapterTitles[i].innerHTML = CHAPTER.name
+	}
+
 	let readingZone = document.getElementById("reading-zone")
 	readingZone.innerHTML = ""
 

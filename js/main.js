@@ -1,7 +1,7 @@
 let API_URL = "http://107.152.41.172:8889"
 
 let CAMPAIGN = localStorage.getItem("overseer-campaign")
-let CHAPTER
+let CHAPTER //do not set
 let USER = localStorage.getItem("overseer-user")
 let PASSWORD = localStorage.getItem("overseer-password")
 let AUTHENTICATED = false
@@ -27,12 +27,44 @@ let FONTS = [
 	{name: "Comic Relief", 		type: "system-ui"}
 ]
 
+let URL_PARAMS = {}
+const params_arr_strings = window.location.href.split('?')[1].split('&');
+for (let i = 0; i < params_arr_strings.length; i++) {
+   let pair = params_arr_strings[i].split('=');
+   URL_PARAMS[pair[0]] = pair[1]
+}
+
+if(URL_PARAMS.guild){
+	let fetchUrl = `${API_URL}/clusterOutput/campaign/guild/${URL_PARAMS.guild}`
+	const response = fetch(fetchUrl, {
+	  	method: "GET"
+	}).then(res => {
+		res.json().then(data =>{
+			console.log(data)
+			if (data.dc_guild_id){
+				localStorage.setItem("overseer-campaign", data)
+				CAMPAIGN = data
+				refreshCampaign()
+			}
+		})
+	})
+}
+
 
 
 
 
 
 // FUNCTIONS ================>
+function sanitize(str) {
+    return str.replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;')
+              .replace(/"/g, '&quot;')
+              .replace(/'/g, '&apos;')
+              .replace(/\\/g, '&bsol;')
+              .replace(/ /g, '&nbsp;');
+}
 async function authenticate (discordUserId, password){
 	let fetchUrl = `${API_URL}/users/CheckCreds?discordId=${discordUserId}&passwordClear=${password}`
 	const response = await fetch(fetchUrl, {
@@ -137,7 +169,7 @@ function addMessage(message){
 	readingZone.innerHTML+=messageHTML
 }
 
-function refreshChapter(){
+async function refreshChapter(){
 	let chapterTitles = document.getElementsByClassName("chapter-name")
 	for(let i = 0; i < chapterTitles.length; i++){
 		chapterTitles[i].innerHTML = CHAPTER.name
@@ -146,11 +178,20 @@ function refreshChapter(){
 	let readingZone = document.getElementById("reading-zone")
 	readingZone.innerHTML = ""
 
+	if (CHAPTER.messages === "unloaded"){
+		let fetchUrl = `${API_URL}/clusterOutput/chapter/${CHAPTER.id}`
+		const response = await fetch(fetchUrl, {
+		  	method: "GET"
+		});
+		let data = await response.json()
+		CHAPTER.messages = data.messages
+	}
+
 	for (let i = 0; i < CHAPTER.messages.length; i++){
 		addMessage(CHAPTER.messages[i])
 	}
 }
-function refreshCampaign(){
+async function refreshCampaign(){
 	//set campaign name everywhere it needs to be
 	document.title = `${CAMPAIGN.name} - (Overseer)`
 	let campaignTitles = document.getElementsByClassName("campaign-name")
@@ -161,6 +202,7 @@ function refreshCampaign(){
 
 
 	//load chapter groups
+	document.getElementById("aside-chapter-group-container").innerHTML = ""
 	for (let i = 0; i < CAMPAIGN.chapter_groups.length; i++){
 		addChapterGroupToUI(CAMPAIGN.chapter_groups[i])
 

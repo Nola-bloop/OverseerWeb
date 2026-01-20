@@ -116,7 +116,7 @@ function addChapterGroupToUI(chapterGroup){
 	element.innerHTML = 
 	`
 	<div class="chapter-group-header" onclick="selectElementsFromId('${chapterGroup.id}')">
-		<p class="chapter-group-title" >${chapterGroup.name}</p>
+		<p class="chapter-group-title" >${sanitize(chapterGroup.name)}</p>
 		<p class="chapter-group-arrow selectable-${chapterGroup.id}">➤</p>
 	</div>
 	<div id="chapter-container-${chapterGroup.id}" class="chapter-container selectable-${chapterGroup.id}">
@@ -152,18 +152,45 @@ function selectChapter(id){
 	refreshChapter()
 }
 
+function addThread(thread){
+	let readingZone = document.getElementById("reading-zone")
+	let threadHTML = `
+		<div class="thread" id="thread-${thread.id}">
+			<p class="thread-header">* * * ${sanitize(thread.name)} * * *</p>
+			<div class="thread-box" id="thread-box-${thread.id}"> </div>
+			<p class="thread-footer"> * * *</p>
+		</div>
+	`
+	readingZone.innerHTML += threadHTML
+}
+
 function addMessage(message){
+	let pfp = message.speaker.profile_picture ?? "./media/pfps/unknown.png"
 	let readingZone = document.getElementById("reading-zone")
 
-	let pfp = message.speaker.profile_picture ?? "./media/pfps/unknown.png"
+	if (message.thread.id !== 0){
+		let threadElement = document.getElementById("thread-box-"+message.thread.id)
+		if (!threadElement) {
+			addThread(message.thread)
+			threadElement = document.getElementById("thread-box-"+message.thread.id)
+			if (!threadElement){
+				console.log("error while creating thread:")
+				console.log(message.thread)
+				return
+			}
+		}
+		readingZone = threadElement
+	}
+
+
 
 	let messageHTML = `
 	<div class="message">
 		<div class="message-header">
 			<img src="${pfp}" alt="profile picture" class="message-profile-picture">
-			<p class="message-author">${message.speaker.name}</p>
+			<p class="message-author">${sanitize(message.speaker.name)}</p>
 		</div>
-		<p class="message-text">${message.message}</p>
+		<p class="message-text">${sanitize(message.message)}</p>
 	</div>
 	`
 	readingZone.innerHTML+=messageHTML
@@ -192,11 +219,13 @@ async function refreshChapter(){
 	}
 }
 async function refreshCampaign(){
+	if (!CAMPAIGN || !CAMPAIGN.id) return
+
 	//set campaign name everywhere it needs to be
-	document.title = `${CAMPAIGN.name} - (Overseer)`
+	document.title = `${sanitize(CAMPAIGN.name)} - (Overseer)`
 	let campaignTitles = document.getElementsByClassName("campaign-name")
 	for(let i = 0; i < campaignTitles.length; i++){
-		campaignTitles[i].innerHTML = CAMPAIGN.name
+		campaignTitles[i].innerHTML = sanitize(CAMPAIGN.name)
 	}
 
 
@@ -222,7 +251,7 @@ async function refreshCampaign(){
 
 //LOGIC =================>
 //load test values
-CAMPAIGN = TEST_VALUES[0]
+//CAMPAIGN = TEST_VALUES[0]
 
 
 if (USER && PASSWORD) AUTHENTICATED = authenticate(USER.dc_user_id, PASSWORD) //async

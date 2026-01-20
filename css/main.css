@@ -217,13 +217,30 @@ body{
 			
 			*{color: var(--light-tone);}
 			.chapter{
-				margin-left: 1.2em;
+				padding-left: 1.2em;
 				padding: 5px;
 				cursor: pointer;
+			}
+			.chapter:hover{
+				background-color: var(--darker-tone);
+			}
+		}
+		.chapter-group-header:hover{
+			.chapter-group-title{
+				font-weight: 600;
 			}
 		}
 		.chapter-container.selected{
 			max-height: 20vh;
 		}
 	}
-}	
+}
+.thread{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	.thread-box{
+		width: 80%;
+	}
+}

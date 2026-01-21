@@ -180,6 +180,7 @@ body{
 		margin: 5px;
 		padding: 1vh 1vw;
 		user-select: text;
+		text-wrap: wrap;
 	}
 }
 

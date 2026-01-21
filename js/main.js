@@ -56,53 +56,26 @@ if(URL_PARAMS.guild){
 
 
 // FUNCTIONS ================>
-function autoLineBreak(p) {
-	return
-  if (!p || !p.parentElement) return;
+function markdown(node){
+	if (!node || !node.parentElement) return
 
-  const containerWidth = p.clientWidth;
-
-  // Preserve original text
-  const text = p.textContent;
-  const words = text.split(/\s+/);
-
-  // Create a measuring span
-  const measure = document.createElement("span");
-  const style = getComputedStyle(p);
-
-  measure.style.visibility = "hidden";
-  measure.style.position = "absolute";
-  measure.style.whiteSpace = "nowrap";
-  measure.style.font = style.font;
-  measure.style.letterSpacing = style.letterSpacing;
-  measure.style.padding = style.padding;
-
-  document.body.appendChild(measure);
-
-  p.innerHTML = "";
-
-  let line = "";
-
-  for (let i = 0; i < words.length; i++) {
-    const testLine = line ? line + " " + words[i] : words[i];
-    measure.textContent = testLine;
-
-    if (measure.offsetWidth > containerWidth && line !== "") {
-      p.appendChild(document.createTextNode(line));
-      p.appendChild(document.createElement("br"));
-      line = words[i];
-    } else {
-      line = testLine;
-    }
-  }
-
-  if (line) {
-    p.appendChild(document.createTextNode(line));
-  }
-
-  document.body.removeChild(measure);
+	node.innerHTML = marked.parse(node.innerHTML)
 }
-
+function indent(node){
+	if (!node || !node.parentElement) return
+	let output = ""
+	
+	const paragraphs = node.innerHTML.split(/(\r\n|\r|\n)/)
+	for (const paragraph of paragraphs){
+		output += `<div class="paragraph">${paragraph}</div>`
+	}
+	node.innerHTML = output
+}
+function readify(node){
+	if (!node || !node.parentElement) return
+	indent(node)
+	markdown(node)
+}
 function sanitize(str) {
     return str.replace(/&/g, '&amp;')
               .replace(/</g, '&lt;')
@@ -110,7 +83,7 @@ function sanitize(str) {
               .replace(/"/g, '&quot;')
               .replace(/'/g, '&apos;')
               .replace(/\\/g, '&bsol;')
-              .replace(/ /g, '&nbsp;');
+              //.replace(/ /g, '&nbsp;');
 }
 async function authenticate (discordUserId, password){
 	let fetchUrl = `${API_URL}/users/CheckCreds?discordId=${discordUserId}&passwordClear=${password}`
@@ -237,11 +210,11 @@ function addMessage(message){
 			<img src="${pfp}" alt="profile picture" class="message-profile-picture">
 			<p class="message-author">${sanitize(message.speaker.name)}</p>
 		</div>
-		<p class="message-text" lang="en" id="message-text-${message.id}">${sanitize(message.message)}</p>
+		<div class="message-text" lang="en" id="message-text-${message.id}">${sanitize(message.message)}</div>
 	</div>
 	`
 	readingZone.innerHTML+=messageHTML
-	autoLineBreak(document.getElementById(`message-text-${message.id}`))
+	readify(document.getElementById(`message-text-${message.id}`))
 }
 
 async function refreshChapter(){
@@ -293,14 +266,7 @@ async function refreshCampaign(){
 	refreshChapter()
 }
 
-//events
-window.addEventListener('resize', function(event) {
-    let messages = document.getElementsByClassName("message-text")
-
-    for (let i = 0; i < messages.length; i++){
-    	autoLineBreak(messages[i])
-    }
-}, true);
+//events and custom elements
 
 
 

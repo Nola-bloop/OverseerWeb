@@ -9,6 +9,7 @@
 	--border-rad: 10px;
 
 	--aside-width: 15vw;
+	--reading-zone-width: 80vw;
 }
 
 *{
@@ -123,7 +124,7 @@ body{
 		padding-top: 2vh;
 		#reading-zone{
 			min-height: 15vh;
-			width: 80vw;
+			width: var(--reading-zone-width);
 			padding: 2vh 1vw;
 
 			border: var(--dark-tone) solid 2px;;			
@@ -177,6 +178,8 @@ body{
 		}
 	}
 	.message-text{
+		display: flex;
+		flex-wrap: wrap;
 		color: var(--light-tone);
 		background-color: var(--dark-tone);
 		box-shadow: var(--shadow-tone) inset 1px 2px 0px;
@@ -185,11 +188,15 @@ body{
 		padding: 1vh 1vw;
 		user-select: text;
 		hyphens: auto;
-	  -webkit-hyphens: auto;
-	  -ms-hyphens: auto;
+	    -webkit-hyphens: auto;
+	    -ms-hyphens: auto;
+	    text-wrap: wrap;
 
 	  overflow-wrap: normal;
 	  word-break: normal;
+	  *{
+	  	color: var(--light-tone);
+	  }
 	}
 }
 
@@ -252,5 +259,49 @@ body{
 	width: 100%;
 	.thread-box{
 		width: 80%;
+	}
+}
+.paragraph{
+	margin: 0.5em 0;
+}
+.word{
+	color: var(--light-tone);
+	margin: 0 0.1em;
+}
+em{
+	font-style: italic;
+}
+strong{
+	font-weight: 600;
+}
+
+@media screen and (max-width: 1100px) {
+    :root {
+    	--aside-width: 50vw;
+    	--reading-zone-width: 95vw;
+    }
+
+    aside {
+    	transform: translateX(-100%);
+    }
+
+    aside.selected {
+    	transform: translateX(0);
+    }
+    
+}
+@media (hover: none) {
+  aside:hover {
+    transform: translateX(calc(var(--aside-width) * -1));
+  }
+  	#aside-button{
+  		background-color: var(--dark-tone);
+  		padding: 0.6em 0.8em;
+  		border-radius: var(--border-rad);
+  		align-self: flex-start;
+  		margin: 0.3em 0.4em;
+  		p{
+  			color: var(--light-tone);
+  		}
 	}
 }

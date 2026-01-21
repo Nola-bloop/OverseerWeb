@@ -61,7 +61,7 @@ body{
 		scrollbar-width: none;
 
 		/*left: calc(var(--aside-width) * -1);*/
-		transform: translateX(calc((-100%) + 7vh));
+		transform: translateX(calc((-100%) + 5vh));
 		#aside-button{
 			img{
 				width: 2vh;

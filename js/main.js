@@ -56,30 +56,46 @@ if(URL_PARAMS.guild){
 
 
 // FUNCTIONS ================>
-function classicify(){
-	document.documentElement.style.setProperty('--dark-tone', 'black');
-	document.documentElement.style.setProperty('--darker-tone', 'white');
-	document.documentElement.style.setProperty('--middle-tone', 'white');
-	document.documentElement.style.setProperty('--light-tone', 'white');
-	document.documentElement.style.setProperty('--shadow-tone', 'black');
+function classicify(text, bg){
+	let col1 = text ?? "black"
+	let col2 = bg ?? "white"
+	document.documentElement.style.setProperty('--dark-tone', col1);
+	document.documentElement.style.setProperty('--darker-tone', col2);
+	document.documentElement.style.setProperty('--middle-tone', col2);
+	document.documentElement.style.setProperty('--light-tone', col2);
+	document.documentElement.style.setProperty('--shadow-tone', col1);
 	let css = `<style id="classic-style">
+		@media screen and (min-width: 1100px){
+			aside {
+		    	transform: translateX(-100%);
+		    }
+			aside:hover{
+				transform: translateX(-90%);
+			}
+		  	aside.selected {
+		    	transform: translateX(0);
+		    	#aside-button{
+		    		transform: rotate(180deg);
+		    	}
+		  	}
+		}
 	    :root {
 	    	--aside-width: 30vw;
 	    	--reading-zone-width: 95vw;
 	    }
 		body{
-			background-color: white !important;
+			background-color: ${col2} !important;
 		}
 		* {
 			font-family: "EB Garamond", serif;
 			article *{
-				color: black !important;
-				background-color: white !important;
-				border: black solid 0px !important;
-				box-shadow: black 0 0 0 !important;
+				color: ${col1} !important;
+				background-color: ${col2} !important;
+				border: ${col2} solid 0px !important;
+				box-shadow: ${col2} 0 0 0 !important;
 			}
 			#reading-zone{
-				border: black solid 0px;!
+				border: ${col2} solid 0px;!
 			}
 			.message{
 				.message-header{
@@ -92,28 +108,16 @@ function classicify(){
 					padding: 0;
 				}
 			}
-		    aside {
-		    	transform: translateX(-100%);
-		    }
-			aside:hover{
-				transform: translateX(-90%);
-			}
-		  	aside.selected {
-		    	transform: translateX(0);
-		    	#aside-button{
-		    		transform: rotate(180deg);
-		    	}
-		  	}
 		  	#aside-button{
-		  		background-color: white;
+		  		background-color: ${col2};
 		  		padding: 0.6em 0.8em;
 		  		border-radius: var(--border-rad);
-				border: black solid 2px;
+				border: ${col1} solid 2px;
 		  		align-self: flex-start;
 		  		margin: 0.3em 0.4em;
 
 		  		p{
-		  			color: black;
+		  			color: ${col1};
 		  		}
 			}
 			.thread{
@@ -377,7 +381,8 @@ async function refreshCampaign(){
 //load test values
 //CAMPAIGN = TEST_VALUES[0]
 if (URL_PARAMS["mode"]){
-	if (URL_PARAMS["mode"] === "book") classicify()
+	if (URL_PARAMS["mode"] === "book") classicify("#242424FF", "#FAEEE1FF")
+	else if (URL_PARAMS["mode"] === "book-dark") classicify("#FAEEE1FF", "#242424FF")
 }
 
 if (USER && PASSWORD) AUTHENTICATED = authenticate(USER.dc_user_id, PASSWORD) //async

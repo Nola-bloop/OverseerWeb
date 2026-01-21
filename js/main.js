@@ -56,25 +56,106 @@ if(URL_PARAMS.guild){
 
 
 // FUNCTIONS ================>
-function markdown(node){
-	if (!node || !node.parentElement) return
+function classicify(){
+	document.documentElement.style.setProperty('--dark-tone', 'black');
+	document.documentElement.style.setProperty('--darker-tone', 'white');
+	document.documentElement.style.setProperty('--middle-tone', 'white');
+	document.documentElement.style.setProperty('--light-tone', 'white');
+	document.documentElement.style.setProperty('--shadow-tone', 'black');
+	let css = `<style id="classic-style">
+	    :root {
+	    	--aside-width: 30vw;
+	    	--reading-zone-width: 95vw;
+	    }
+		body{
+			background-color: white !important;
+		}
+		* {
+			font-family: "EB Garamond", serif;
+			article *{
+				color: black !important;
+				background-color: white !important;
+				border: black solid 0px !important;
+				box-shadow: black 0 0 0 !important;
+			}
+			#reading-zone{
+				border: black solid 0px;!
+			}
+			.message{
+				.message-header{
+					.message-profile-picture{
+						display:none
+					}
+				}
+				.message-text{
+					margin: 0;
+					padding: 0;
+				}
+			}
+		    aside {
+		    	transform: translateX(-100%);
+		    }
+			aside:hover{
+				transform: translateX(-90%);
+			}
+		  	aside.selected {
+		    	transform: translateX(0);
+		    	#aside-button{
+		    		transform: rotate(180deg);
+		    	}
+		  	}
+		  	#aside-button{
+		  		background-color: white;
+		  		padding: 0.6em 0.8em;
+		  		border-radius: var(--border-rad);
+				border: black solid 2px;
+		  		align-self: flex-start;
+		  		margin: 0.3em 0.4em;
 
-	node.innerHTML = marked.parse(node.innerHTML)
+		  		p{
+		  			color: black;
+		  		}
+			}
+			.thread{
+				.thread-box{
+					width: 93%;
+				}
+			}
+		}
+	</style>`
+	document.body.innerHTML += css
+}
+function markdown(node){
+	if (!node) return
+	if (!node.parentElement){
+		return marked.parse(node)
+	}else{
+		node.innerHTML = marked.parse(node.innerHTML)
+	}
 }
 function indent(node){
-	if (!node || !node.parentElement) return
+	if (!node) return
 	let output = ""
-	
-	const paragraphs = node.innerHTML.split(/(\r\n|\r|\n)/)
-	for (const paragraph of paragraphs){
-		output += `<div class="paragraph">${paragraph}</div>`
+	if (!node.parentElement){
+		const paragraphs = node.split(/(\r\n|\r|\n)/)
+		for (const paragraph of paragraphs){
+			output += `<div class="paragraph">${paragraph}</div>`
+		}
+		return output
+	}else{
+		const paragraphs = node.innerHTML.split(/(\r\n|\r|\n)/)
+		for (const paragraph of paragraphs){
+			output += `<div class="paragraph">${paragraph}</div>`
+		}
+		node.innerHTML = output
 	}
-	node.innerHTML = output
+	
 }
 function readify(node){
-	if (!node || !node.parentElement) return
+	if (!node) return
 	markdown(node)
 	indent(node)
+	return node
 }
 function sanitize(str) {
     return str.replace(/&/g, '&amp;')
@@ -184,6 +265,7 @@ function addThread(thread){
 	readingZone.innerHTML += threadHTML
 }
 
+let lastMessageAdded = {speaker:{name:""},thread:{id:-1}}
 function addMessage(message){
 	let pfp = message.speaker.profile_picture ?? "./media/pfps/unknown.png"
 	let readingZone = document.getElementById("reading-zone")
@@ -203,7 +285,6 @@ function addMessage(message){
 	}
 
 
-
 	let messageHTML = `
 	<div class="message" id="message-${message.id}">
 		<div class="message-header">
@@ -213,9 +294,20 @@ function addMessage(message){
 		<div class="message-text" lang="en" id="message-text-${message.id}">${sanitize(message.message)}</div>
 	</div>
 	`
-	readingZone.innerHTML+=messageHTML
-	readify(document.getElementById(`message-text-${message.id}`))
+	console.log(`${lastMessageAdded.speaker.name} === ${message.speaker.name} && ${lastMessageAdded.thread.id} === ${message.thread.id}`)
+	if (lastMessageAdded.speaker.name === message.speaker.name && message.thread.id === lastMessageAdded.thread.id){
+		console.log("pairing")
+		lastMessageAdded.message += "<br>"+message.message
+		document.getElementById(`message-text-${lastMessageAdded.id}`).innerHTML = `${lastMessageAdded.message}`
+	}else{
+		console.log("separating")
+		readingZone.innerHTML+=messageHTML
+		lastMessageAdded = message
+	}
+	readify(document.getElementById(`message-text-${lastMessageAdded.id}`))
+	
 }
+
 
 async function refreshChapter(){
 	let chapterTitles = document.getElementsByClassName("chapter-name")
@@ -284,7 +376,9 @@ async function refreshCampaign(){
 //LOGIC =================>
 //load test values
 //CAMPAIGN = TEST_VALUES[0]
-
+if (URL_PARAMS["mode"]){
+	if (URL_PARAMS["mode"] === "book") classicify()
+}
 
 if (USER && PASSWORD) AUTHENTICATED = authenticate(USER.dc_user_id, PASSWORD) //async
 

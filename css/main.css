@@ -126,7 +126,7 @@ body{
 			width: var(--reading-zone-width);
 			padding: 2vh 1vw;
 
-			border: var(--dark-tone) solid 2px;;			
+			border: var(--dark-tone) solid 2px;		
 			color: var(--dark-tone);
 			background-color: var(--middle-tone);
 			border-radius: var(--border-rad);

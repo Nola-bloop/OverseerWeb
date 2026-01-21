@@ -303,6 +303,11 @@ strong{
   			color: var(--light-tone);
   		}
 	}
+	.thread{
+		.thread-box{
+			width: 93%;
+		}
+	}
     
 }
 @media (hover: hover) and (pointer: fine) {

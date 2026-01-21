@@ -283,9 +283,6 @@ strong{
     aside {
     	transform: translateX(-100%);
     }
-    aside:hover {
-    	transform: translateX(-100%);
-    }
   	aside.selected {
     	transform: translateX(0);
     	#aside-button{
@@ -311,7 +308,7 @@ strong{
     
 }
 @media (hover: hover) and (pointer: fine) {
-  aside:hover {
+  aside.hoverable:hover {
     transform: translateX(0);
   }
 }

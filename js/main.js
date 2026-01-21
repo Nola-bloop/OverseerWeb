@@ -64,24 +64,11 @@ function classicify(text, bg){
 	document.documentElement.style.setProperty('--middle-tone', col2);
 	document.documentElement.style.setProperty('--light-tone', col2);
 	document.documentElement.style.setProperty('--shadow-tone', col1);
+	document.getElementById("aside").classList.remove("hoverable")
 	let css = `<style id="classic-style">
-		@media screen and (min-width: 1100px){
-			aside {
-		    	transform: translateX(-100%);
-		    }
-			aside:hover{
-				transform: translateX(-90%);
-			}
-		  	aside.selected {
-		    	transform: translateX(0);
-		    	#aside-button{
-		    		transform: rotate(180deg);
-		    	}
-		  	}
-		}
 	    :root {
-	    	--aside-width: 30vw;
-	    	--reading-zone-width: 95vw;
+	    	--aside-width: 30vw !important;
+	    	--reading-zone-width: 95vw !important;
 	    }
 		body{
 			background-color: ${col2} !important;
@@ -125,6 +112,12 @@ function classicify(text, bg){
 					width: 93%;
 				}
 			}
+			aside.selected {
+		    	transform: translateX(0);
+		    	#aside-button{
+		    		transform: rotate(180deg);
+		    	}
+		  	}
 		}
 	</style>`
 	document.body.innerHTML += css

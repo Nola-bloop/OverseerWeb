@@ -57,6 +57,7 @@ if(URL_PARAMS.guild){
 
 // FUNCTIONS ================>
 function autoLineBreak(p) {
+	return
   if (!p || !p.parentElement) return;
 
   const containerWidth = p.clientWidth;

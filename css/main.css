@@ -27,12 +27,6 @@
     transition-timing-function: ease-out;
 
 	user-select: none;
-
-	-ms-overflow-style: none;  /* IE and Edge */
-	scrollbar-width: none;  /* Firefox */
-}
-*::-webkit-scrollbar {
- 	display: none;
 }
 *::-moz-selection, *::selection{
 	color:var(--shadow-tone);
@@ -61,6 +55,10 @@ body{
 		height: 100vh;
 		position: fixed;
 		top: 0;
+
+		-ms-overflow-style: none;  /* IE and Edge */
+		scrollbar-width: none;
+
 		/*left: calc(var(--aside-width) * -1);*/
 		transform: translateX(calc(var(--aside-width) * -1));
 		#aside-button{
@@ -113,6 +111,9 @@ body{
 	aside:hover{
 		/*left:0;*/
 		transform: translateX(0);
+	}
+	aside::-webkit-scrollbar {
+		 	display: none;
 	}
 
 	article{

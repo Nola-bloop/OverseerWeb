@@ -1,4 +1,4 @@
-let API_URL = "http://107.152.41.172:8889"
+let API_URL = "https://nolar-eclipse.ca:8889"
 
 let CAMPAIGN = localStorage.getItem("overseer-campaign")
 let CHAPTER //do not set

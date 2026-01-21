@@ -56,6 +56,52 @@ if(URL_PARAMS.guild){
 
 
 // FUNCTIONS ================>
+function autoLineBreak(p) {
+  if (!p || !p.parentElement) return;
+
+  const containerWidth = p.clientWidth;
+
+  // Preserve original text
+  const text = p.textContent;
+  const words = text.split(/\s+/);
+
+  // Create a measuring span
+  const measure = document.createElement("span");
+  const style = getComputedStyle(p);
+
+  measure.style.visibility = "hidden";
+  measure.style.position = "absolute";
+  measure.style.whiteSpace = "nowrap";
+  measure.style.font = style.font;
+  measure.style.letterSpacing = style.letterSpacing;
+  measure.style.padding = style.padding;
+
+  document.body.appendChild(measure);
+
+  p.innerHTML = "";
+
+  let line = "";
+
+  for (let i = 0; i < words.length; i++) {
+    const testLine = line ? line + " " + words[i] : words[i];
+    measure.textContent = testLine;
+
+    if (measure.offsetWidth > containerWidth && line !== "") {
+      p.appendChild(document.createTextNode(line));
+      p.appendChild(document.createElement("br"));
+      line = words[i];
+    } else {
+      line = testLine;
+    }
+  }
+
+  if (line) {
+    p.appendChild(document.createTextNode(line));
+  }
+
+  document.body.removeChild(measure);
+}
+
 function sanitize(str) {
     return str.replace(/&/g, '&amp;')
               .replace(/</g, '&lt;')
@@ -185,15 +231,16 @@ function addMessage(message){
 
 
 	let messageHTML = `
-	<div class="message">
+	<div class="message" id="message-${message.id}">
 		<div class="message-header">
 			<img src="${pfp}" alt="profile picture" class="message-profile-picture">
 			<p class="message-author">${sanitize(message.speaker.name)}</p>
 		</div>
-		<p class="message-text">${sanitize(message.message)}</p>
+		<p class="message-text" lang="en" id="message-text-${message.id}">${sanitize(message.message)}</p>
 	</div>
 	`
 	readingZone.innerHTML+=messageHTML
+	autoLineBreak(document.getElementById(`message-text-${message.id}`))
 }
 
 async function refreshChapter(){
@@ -245,6 +292,14 @@ async function refreshCampaign(){
 	refreshChapter()
 }
 
+//events
+window.addEventListener('resize', function(event) {
+    let messages = document.getElementsByClassName("message-text")
+
+    for (let i = 0; i < messages.length; i++){
+    	autoLineBreak(messages[i])
+    }
+}, true);
 
 
 

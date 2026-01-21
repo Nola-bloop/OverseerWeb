@@ -73,8 +73,8 @@ function indent(node){
 }
 function readify(node){
 	if (!node || !node.parentElement) return
-	indent(node)
 	markdown(node)
+	indent(node)
 }
 function sanitize(str) {
     return str.replace(/&/g, '&amp;')

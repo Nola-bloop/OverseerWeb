@@ -110,8 +110,7 @@ body{
 		}
 	}
 	aside:hover{
-		/*left:0;*/
-		transform: translateX(0);
+		/*HANDLED LOWER  transform: translateX(0);*/
 	}
 	aside::-webkit-scrollbar {
 		 	display: none;
@@ -284,11 +283,8 @@ strong{
     aside {
     	transform: translateX(-100%);
     }
-    
-}
-@media (hover: none) {
-  	aside:hover {
-    	transform: translateX(calc(var(--aside-width) * -1));
+    aside:hover {
+    	transform: translateX(-100%);
     }
   	aside.selected {
     	transform: translateX(0);
@@ -302,8 +298,15 @@ strong{
   		border-radius: var(--border-rad);
   		align-self: flex-start;
   		margin: 0.3em 0.4em;
+
   		p{
   			color: var(--light-tone);
   		}
 	}
+    
+}
+@media (hover: hover) and (pointer: fine) {
+  aside:hover {
+    transform: translateX(0);
+  }
 }

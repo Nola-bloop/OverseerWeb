@@ -284,16 +284,18 @@ strong{
     aside {
     	transform: translateX(-100%);
     }
-
-    aside.selected {
-    	transform: translateX(0);
-    }
     
 }
 @media (hover: none) {
-  aside:hover {
-    transform: translateX(calc(var(--aside-width) * -1));
-  }
+  	aside:hover {
+    	transform: translateX(calc(var(--aside-width) * -1));
+    }
+  	aside.selected {
+    	transform: translateX(0);
+    	#aside-button{
+    		transform: rotate(180deg);
+    	}
+  	}
   	#aside-button{
   		background-color: var(--dark-tone);
   		padding: 0.6em 0.8em;

@@ -131,6 +131,7 @@ body{
 			background-color: var(--middle-tone);
 			border-radius: var(--border-rad);
 			box-shadow: var(--shadow-tone) 2px 3px 0px;
+			word-wrap: normal;
 		}
 	}
 }

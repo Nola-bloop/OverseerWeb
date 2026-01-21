@@ -239,6 +239,16 @@ async function refreshChapter(){
 		addMessage(CHAPTER.messages[i])
 	}
 }
+
+function toggleSelected(elem){
+	if (!elem || !elem.parentElement) return
+	if (!elem.classList.contains("selected")){
+		elem.classList.add("selected")
+	}else{
+		elem.classList.remove("selected")
+	}
+}
+
 async function refreshCampaign(){
 	if (!CAMPAIGN || !CAMPAIGN.id) return
 

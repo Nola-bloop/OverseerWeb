@@ -113,12 +113,6 @@ function classicify(text, bg){
 					width: 93%;
 				}
 			}
-			aside.selected {
-		    	transform: translateX(0);
-		    	#aside-button{
-		    		transform: rotate(180deg);
-		    	}
-		  	}
 		}
 	</style>`
 	document.body.innerHTML += css

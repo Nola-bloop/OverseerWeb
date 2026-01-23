@@ -79,7 +79,7 @@ body{
 		-ms-overflow-style: none;  /* IE and Edge */
 		scrollbar-width: none;
 
-		transform: translateX(-110%);
+		transform: translateX(-125%);
 		#aside-content{
 			width: var(--aside-width);
 			min-width: fit-content;

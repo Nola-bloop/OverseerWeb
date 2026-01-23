@@ -114,6 +114,12 @@ function classicify(text, bg){
 				}
 			}
 		}
+		@media screen and (max-width: 600px) {
+		  	:root {
+		  		--aside-width: 50vw important!;
+		  		--reading-zone-width: 95vw important!;
+		    }
+	    }
 	</style>`
 	document.body.innerHTML += css
 }

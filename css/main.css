@@ -8,6 +8,7 @@
 
 	--border-rad: 10px;
 
+	--aside-button-pos: 49vh;
 	--aside-width: 20vw;
 	--reading-zone-width: 80vw;
 }
@@ -53,7 +54,7 @@ body{
 		z-index: 11;
 		position: fixed;
 		left: 0;
-		top: calc(50vh - 0.7em);
+		top: var(--aside-button-pos);
 		background-color: var(--dark-tone);
 		padding: 0.6em 0.8em;
 		border-radius: var(--border-rad);
@@ -79,7 +80,7 @@ body{
 		scrollbar-width: none;
 
 		/*left: calc(var(--aside-width) * -1);*/
-		transform: translateX(-100%);
+		transform: translateX(calc(-1 * var(--aside-width)));
 		#aside-content{
 			width: var(--aside-width);
 			min-width: fit-content;
@@ -291,10 +292,6 @@ strong{
   :root {
   	--aside-width: 50vw;
   	--reading-zone-width: 95vw;
-  }
-
-  aside {
-  	transform: translateX(-100%);
   }
 	.thread{
 		.thread-box{

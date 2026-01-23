@@ -28,11 +28,12 @@ let FONTS = [
 ]
 
 let URL_PARAMS = {}
-const params_arr_strings = window.location.href.split('?')[1].split('&');
-for (let i = 0; i < params_arr_strings.length; i++) {
-   let pair = params_arr_strings[i].split('=');
-   URL_PARAMS[pair[0]] = pair[1]
-}
+const params_arr_strings = window.location.href.split('?')[1]?.split('&');
+if (params_arr_strings)
+	for (let i = 0; i < params_arr_strings.length; i++) {
+	   let pair = params_arr_strings[i].split('=');
+	   URL_PARAMS[pair[0]] = pair[1]
+	}
 
 if(URL_PARAMS.guild){
 	let fetchUrl = `${API_URL}/clusterOutput/campaign/guild/${URL_PARAMS.guild}`

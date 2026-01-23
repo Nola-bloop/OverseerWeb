@@ -30,7 +30,7 @@
 	<!---------------------->
 	<aside class="hoverable" id="aside">
 		<div id="aside-content">
-			<p id="aside-title">Chapters</p>
+			<p id="aside-title">Categories</p>
 			<div id="aside-chapter-group-container" class="chapter-group-container">
 
 				<!-- Where chapter groups and chapters will be added -->
@@ -38,10 +38,10 @@
 			</div>
 			<p id="aside-edit-button" class="editable-aside" onclick="toggleEditMode('aside')">🖋</p>
 		</div>
-		<div id="aside-button" onclick="toggleSelected(this.parentElement)">
-			<p>➤</p>
-		</div>
 	</aside>
+	<div id="aside-button" onclick="toggleSelected(this);toggleSelected(document.getElementById('aside'))">
+		<p>➤</p>
+	</div>
 
 
 

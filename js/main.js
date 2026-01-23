@@ -64,7 +64,7 @@ function classicify(text, bg){
 	document.documentElement.style.setProperty('--darker-tone', col2);
 	document.documentElement.style.setProperty('--middle-tone', col2);
 	document.documentElement.style.setProperty('--light-tone', col2);
-	document.documentElement.style.setProperty('--shadow-tone', col1);
+	document.documentElement.style.setProperty('--shadow-tone', col2);
 	document.getElementById("aside").classList.remove("hoverable")
 	let css = `<style id="classic-style">
 	    :root {
@@ -96,17 +96,23 @@ function classicify(text, bg){
 					padding: 0;
 				}
 			}
-		  	#aside-button{
-		  		background-color: ${col2};
-		  		padding: 0.6em 0.8em;
-		  		border-radius: var(--border-rad);
-				border: ${col1} solid 2px;
+	  	#aside-button{
+	  			background-color: ${col2};
+	  			padding: 0.6em 0.8em;
+	  			border-radius: var(--border-rad);
+			  	border: ${col1} solid 2px;
 		  		align-self: flex-start;
 		  		margin: 0.3em 0.4em;
 
 		  		p{
 		  			color: ${col1};
 		  		}
+			}
+			#aside-edit-button.editing, .button.selected{
+				background-color: var(--light-tone) !important;
+				box-shadow: var(--shadow-tone) inset 0px 0px 0px !important;
+				border: var(--dark-tone) dashed 2px !important;
+				color: var(--dark-tone) !important;
 			}
 			.thread{
 				.thread-box{

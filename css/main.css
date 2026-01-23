@@ -90,8 +90,10 @@ body{
 
 			background-color: var(--middle-tone);
 			border-right: var(--dark-tone) dashed 3px;
-
-			#aside-title, #aside-edit-button{
+			audio{
+				width: 70%;
+			}
+			#aside-title, #aside-edit-button, .button{
 				font-size: 1.5em;
 				text-align: center;
 				width: 70%;
@@ -104,21 +106,26 @@ body{
 				background-color: var(--dark-tone);
 				border-radius: var(--border-rad);
 			}
-			#aside-edit-button{
+			#aside-edit-button, .button{
 				font-size: 1em;
 				cursor: pointer;
 
 				color: var(--light-tone);
 				box-shadow: var(--shadow-tone) 2px 3px 0px;
 			}
-			#aside-edit-button:hover{
+			#aside-edit-button:hover, .button:hover{
 
 				/*background-color: var(--dark-tone-selected);*/
 				box-shadow: var(--shadow-tone) 0px 0px 0px;
 			}
-			#aside-edit-button.editing{
+			#aside-edit-button.editing, .button.selected{
 				background-color: var(--dark-tone);
 				box-shadow: var(--shadow-tone) inset 1px 2px 0px;
+			}
+			.button{
+				width: fit-content;
+				min-width: 2vw;
+				padding: 0.1em 0.4em;
 			}
 		}
 	}

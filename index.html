@@ -36,7 +36,14 @@
 				<!-- Where chapter groups and chapters will be added -->
 
 			</div>
-			<p id="aside-edit-button" class="editable-aside" onclick="toggleEditMode('aside')">🖋</p>
+			<p id="aside-edit-button" class="editable-aside button" onclick="toggleEditMode('aside')">🖋</p>
+			<audio loop onloadstart="this.volume=0.05" id="song">
+				<source src="./media/sounds/fairy.mp3" type="audio/mpeg">
+			Your browser does not support the audio element.
+			</audio>
+			<div class="button selectable-audio-button" onclick="selectElementsFromId('audio-button'); if (this.classList.contains('selected')) document.getElementById('song').play(); else document.getElementById('song').pause()">
+				♬
+			</div>
 		</div>
 	</aside>
 	<div id="aside-button" onclick="toggleSelected(this);toggleSelected(document.getElementById('aside'))">

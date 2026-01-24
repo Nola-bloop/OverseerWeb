@@ -41,7 +41,6 @@ if(URL_PARAMS.guild){
 	  	method: "GET"
 	}).then(res => {
 		res.json().then(data =>{
-			console.log(data)
 			if (data.dc_guild_id){
 				localStorage.setItem("overseer-campaign", data)
 				CAMPAIGN = data
@@ -114,6 +113,14 @@ function classicify(text, bg){
 				border: var(--dark-tone) dashed 2px !important;
 				color: var(--dark-tone) !important;
 			}
+			.cit{
+				*{
+					color: var(--dark-tone) !important;
+				}
+				.cit-lining{
+					background-color: var(--dark-tone) !important;
+				}
+			}
 			.thread{
 				.thread-box{
 					width: 93%;
@@ -132,10 +139,21 @@ function classicify(text, bg){
 function markdown(node){
 	if (!node) return
 	if (!node.parentElement){
-		return marked.parse(node)
+		return searchAndReplaces(marked.parse(node))
+		//return marked.parse(searchAndReplaces(node))
 	}else{
-		node.innerHTML = marked.parse(node.innerHTML)
+		node.innerHTML = searchAndReplaces(marked.parse(node.innerHTML))
 	}
+}
+function searchAndReplaces(text){
+	return text
+		.replace(/<script.*>.*<\/script>/g, "") //remove scripts
+
+		.replace(/(\r\n|\r|\n|>)(&gt;|>) /g, "<div class='cit'><div class='cit-lining'></div><p>")
+		.replace(/(\r\n|\r|\n|>)(&gt;|>) .*(\r\n|\r|\n)/g, "</p></div>")
+
+		.replace(/(\r\n|\r|\n|>)-# /g, "<span class='comment'>")
+		.replace(/(\r\n|\r|\n|>)-# .*(\r\n|\r|\n)/g, "</span>")
 }
 function indent(node){
 	if (!node) return
@@ -177,7 +195,6 @@ async function authenticate (discordUserId, password){
 	});
 	let data = await response.json()
 	if (typeof data.response !== "boolean"){
-		console.log(data.response)
 		return false
 	}
 	return data
@@ -280,8 +297,6 @@ function addMessage(message){
 			addThread(message.thread)
 			threadElement = document.getElementById("thread-box-"+message.thread.id)
 			if (!threadElement){
-				console.log("error while creating thread:")
-				console.log(message.thread)
 				return
 			}
 		}
@@ -295,16 +310,14 @@ function addMessage(message){
 			<img src="${pfp}" alt="profile picture" class="message-profile-picture">
 			<p class="message-author">${sanitize(message.speaker.name)}</p>
 		</div>
-		<div class="message-text" lang="en" id="message-text-${message.id}">${sanitize(message.message)}</div>
+		<div class="message-text" lang="en" id="message-text-${message.id}">${message.message}</div>
 	</div>
 	`
-	console.log(`${lastMessageAdded.speaker.name} === ${message.speaker.name} && ${lastMessageAdded.thread.id} === ${message.thread.id}`)
+	console.log(message.message)
 	if (lastMessageAdded.speaker.name === message.speaker.name && message.thread.id === lastMessageAdded.thread.id){
-		console.log("pairing")
-		lastMessageAdded.message += "<br>"+message.message
+		lastMessageAdded.message += "<br><br>"+message.message
 		document.getElementById(`message-text-${lastMessageAdded.id}`).innerHTML = `${lastMessageAdded.message}`
 	}else{
-		console.log("separating")
 		readingZone.innerHTML+=messageHTML
 		lastMessageAdded = message
 	}

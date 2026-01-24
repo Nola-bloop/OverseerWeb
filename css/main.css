@@ -8,7 +8,7 @@
 
 	--border-rad: 10px;
 
-	--aside-button-pos: 49vh;
+	--aside-button-pos: 0.5vh;
 	--aside-width: 20vw;
 	--reading-zone-width: 80vw;
 }
@@ -197,7 +197,6 @@ body{
 		}
 	}
 	.message-text{
-		display: flex;
 		flex-wrap: wrap;
 		color: var(--light-tone);
 		background-color: var(--dark-tone);
@@ -282,6 +281,7 @@ body{
 }
 .paragraph{
 	margin: 0.5em 0;
+	display: block;
 }
 .word{
 	color: var(--light-tone);
@@ -291,7 +291,21 @@ em{
 	font-style: italic;
 }
 strong{
-	font-weight: 600;
+	font-weight: 800;
+}
+.cit{
+	display: flex;
+	border-left: var(--darker-tone) solid 3px;
+	.cit-lining{
+		width: 3px;
+		border-radius: 3px;
+		background-color: var(--darker-tone);
+		margin-right: 1em;
+	}
+}
+.comment{
+	font-size: 0.8em;
+	font-weight: 300;
 }
 
 @media screen and (max-width: 600px) {

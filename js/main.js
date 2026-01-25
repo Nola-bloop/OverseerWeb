@@ -180,8 +180,8 @@ function indent(node){
 }
 function readify(node){
 	if (!node) return
-	markdown(node)
-	indent(node)
+	node = markdown(node)
+	node = indent(node)
 	return node
 }
 function sanitize(str) {
@@ -341,8 +341,8 @@ function addMessage(message, i){
 		lastMessageAdded = message
 	}
 	document.getElementById(`message-text-${lastMessageAdded.id}`)
-	window.addEventListener('scroll', async () => {
-	  const element = document.getElementById(`message-text-${message.id}`);
+	let loadThisMessageWhenInView = async () => {
+		const element = document.getElementById(`message-text-${message.id}`);
 	  //console.log("pre elem check")
 	  if (!element?.parentElement) return
 	  const position = element.getBoundingClientRect();
@@ -358,10 +358,11 @@ function addMessage(message, i){
 	    	let text = await getMessageText(id)
 	    	element.innerHTML += text+"<br><br>"
 	    }
-	    element.innerHTML = element.innerHTML.sub(0,-8)
+	    element.innerHTML = element.innerHTML.substring(0,element.innerHTML.length-8)
 	    element.innerHTML = readify(element.innerHTML)
 	  }
-	});
+	}
+	window.addEventListener('scroll', loadThisMessageWhenInView);
 }
 
 

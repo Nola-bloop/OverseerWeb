@@ -384,14 +384,23 @@ async function refreshChapter(){
 		let data = await response.json()
 		CHAPTER.messages = data.messages
 
-		//REMOVE ON DEPLOYMENT
-		for (const m of CHAPTER.messages){
-			m.message = undefined
-		}
+	}
+	//make sure to load messages individualy
+	for (const m of CHAPTER.messages){
+		m.message = undefined
 	}
 
 	for (let i = 0; i < CHAPTER.messages.length; i++){
 		addMessage(CHAPTER.messages[i], i)
+		removeDupMessages(CHAPTER.messages[i].id)
+	}
+}
+function removeDupMessages(id){
+	let messages = document.getElementById("message-"+id)
+
+	if (messages)
+	for (let i = 1; i < messages.length; i++){
+		messages[i].remove()
 	}
 }
 

@@ -149,11 +149,16 @@ function searchAndReplaces(text){
 	return text
 		.replace(/<script.*>.*<\/script>/g, "") //remove scripts
 
+		//citations (> )
 		.replace(/(\r\n|\r|\n|>)(&gt;|>) /g, "<div class='cit'><div class='cit-lining'></div><p>")
 		.replace(/(\r\n|\r|\n|>)(&gt;|>) .*(\r\n|\r|\n)/g, "</p></div>")
 
+		//comments (-#)
 		.replace(/(\r\n|\r|\n|>)-# /g, "<span class='comment'>")
 		.replace(/(\r\n|\r|\n|>)-# .*(\r\n|\r|\n)/g, "</span>")
+
+		//code blocks (```), do nothing
+		.replace(/```/g, "")
 }
 function indent(node){
 	if (!node) return
@@ -287,7 +292,21 @@ function addThread(thread){
 }
 
 let lastMessageAdded = {speaker:{name:""},thread:{id:-1}}
-function addMessage(message){
+
+async function getMessageText(id){
+		let fetchUrl = `${API_URL}/clusterOutput/message/id/${id}`
+		const response = await fetch(fetchUrl, {
+		  	method: "GET"
+		});
+		let data = await response.json()
+		return data.message
+}
+
+function addMessage(message, i){
+	if (!message.message){
+		message.message = message.id
+	}
+
 	let pfp = message.speaker.profile_picture ?? "./media/pfps/unknown.png"
 	let readingZone = document.getElementById("reading-zone")
 
@@ -313,7 +332,7 @@ function addMessage(message){
 		<div class="message-text" lang="en" id="message-text-${message.id}">${message.message}</div>
 	</div>
 	`
-	console.log(message.message)
+
 	if (lastMessageAdded.speaker.name === message.speaker.name && message.thread.id === lastMessageAdded.thread.id){
 		lastMessageAdded.message += "<br><br>"+message.message
 		document.getElementById(`message-text-${lastMessageAdded.id}`).innerHTML = `${lastMessageAdded.message}`
@@ -321,12 +340,33 @@ function addMessage(message){
 		readingZone.innerHTML+=messageHTML
 		lastMessageAdded = message
 	}
-	readify(document.getElementById(`message-text-${lastMessageAdded.id}`))
-	
+	document.getElementById(`message-text-${lastMessageAdded.id}`)
+	window.addEventListener('scroll', async () => {
+	  const element = document.getElementById(`message-text-${message.id}`);
+	  //console.log("pre elem check")
+	  if (!element?.parentElement) return
+	  const position = element.getBoundingClientRect();
+
+		//console.log("pre if")
+	  if(position.top < window.innerHeight && position.bottom >= 0) {
+	    if (!element.innerHTML.match(/^[0-9]+(<br><br>[0-9]+)*$/g)) {
+	    	return
+	    }
+	    let ids = element.innerHTML.split(/<br><br>/g)
+	    element.innerHTML=""
+	    for (const id of ids){
+	    	let text = await getMessageText(id)
+	    	element.innerHTML += text+"<br><br>"
+	    }
+	    element.innerHTML = element.innerHTML.sub(0,-8)
+	    element.innerHTML = readify(element.innerHTML)
+	  }
+	});
 }
 
 
 async function refreshChapter(){
+	if (!CHAPTER) return
 	let chapterTitles = document.getElementsByClassName("chapter-name")
 	for(let i = 0; i < chapterTitles.length; i++){
 		chapterTitles[i].innerHTML = CHAPTER.name
@@ -342,10 +382,15 @@ async function refreshChapter(){
 		});
 		let data = await response.json()
 		CHAPTER.messages = data.messages
+
+		//REMOVE ON DEPLOYMENT
+		for (const m of CHAPTER.messages){
+			m.message = undefined
+		}
 	}
 
 	for (let i = 0; i < CHAPTER.messages.length; i++){
-		addMessage(CHAPTER.messages[i])
+		addMessage(CHAPTER.messages[i], i)
 	}
 }
 

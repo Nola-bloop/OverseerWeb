@@ -394,6 +394,7 @@ async function refreshChapter(){
 		addMessage(CHAPTER.messages[i], i)
 		removeDupMessages(CHAPTER.messages[i].id)
 	}
+	window.dispatchEvent(new CustomEvent('scroll'))
 }
 function removeDupMessages(id){
 	let messages = document.getElementById("message-"+id)
@@ -439,6 +440,48 @@ async function refreshCampaign(){
 	CHAPTER = CAMPAIGN.chapter_groups[0].chapters[0]
 	refreshChapter()
 }
+let WIDTH_CURSOR_HELD = false
+let WIDTH_CURSOR_ELEM = document.getElementById("reading-zone-resize-cursor")
+let WIDTH_CONTAINER = document.getElementById("reading-zone-resize-container")
+let MOUSEX = 0
+function handleHold() {
+	if (window.innerWidth < 600) return
+  if (WIDTH_CURSOR_HELD){
+  	const cursorRect = WIDTH_CURSOR_ELEM.getBoundingClientRect();
+	  const containerRect = WIDTH_CONTAINER.getBoundingClientRect();
+
+	  const leftEdge = (containerRect.right - containerRect.left) / 2 + containerRect.left;
+	  const rightEdge = containerRect.right;
+
+	  let newXPos = Math.min(Math.max(MOUSEX, leftEdge), rightEdge);
+
+	  const relativeX = newXPos - containerRect.left;
+
+	  WIDTH_CURSOR_ELEM.style.left = relativeX + "px";
+
+	  document.documentElement.style.setProperty('--reading-zone-diff', ((rightEdge - relativeX)*2) + "px");
+  }
+
+  setTimeout(handleHold, 10);
+}
+document.addEventListener("DOMContentLoaded", () => {
+  WIDTH_CURSOR_ELEM = document.getElementById("reading-zone-resize-cursor");
+  WIDTH_CONTAINER = document.getElementById("reading-zone-resize-container");
+
+  console.log("connected:", WIDTH_CONTAINER.isConnected); // should be true
+
+  WIDTH_CONTAINER.addEventListener("mousedown", () => WIDTH_CURSOR_HELD = true);
+  window.addEventListener("mouseup", () => WIDTH_CURSOR_HELD = false);
+
+  document.addEventListener("mousemove", e => {
+    MOUSEX = e.clientX;
+  });
+
+  requestAnimationFrame(handleHold);
+});
+
+
+handleHold()
 
 //events and custom elements
 

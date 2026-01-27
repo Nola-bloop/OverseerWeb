@@ -11,6 +11,7 @@
 	--aside-button-pos: 0.5vh;
 	--aside-width: 20vw;
 	--reading-zone-width: 80vw;
+	--reading-zone-diff: 0px;
 }
 
 *{
@@ -40,13 +41,40 @@ body{
 	display: flex;
 	flex-direction: column;
 	header{
-		#campaign-notifier{
-			background-color: black;
-			#campaign-notifier-text{
-				text-align: center;
-				color: white;
-				font-size: 0.8em;
-				padding: 0.5vh;
+		#reading-zone-resize-container{
+			position: fixed;
+		  width: var(--reading-zone-width);
+		  top: 5em;
+		  left: 50%;
+		  transform: translateX(-50%); /* better centering */
+		  
+		  transition: opacity;
+		  transition-duration: 500ms;
+
+		  opacity: 0.2;
+		  *{
+		  	opacity: 0.2;
+		  }
+
+		  display: flex;
+		  flex-direction: column;
+		  align-items: center;
+			#reading-zone-resize-line{
+				border-bottom: var(--dark-tone) dashed 3px;
+				width: 100%;
+			}
+			#reading-zone-resize-cursor{
+				position: absolute;
+			  right: 0;          /* starting point */
+			  cursor: ew-resize;
+			  margin: 0;        /* remove margin hacks */
+			  align-self: unset;
+			}
+		}
+		#reading-zone-resize-container:hover{
+			opacity: 1;
+			*{
+				opacity: 1;
 			}
 		}
 	}
@@ -143,7 +171,7 @@ body{
 		padding-top: 2vh;
 		#reading-zone{
 			min-height: 15vh;
-			width: var(--reading-zone-width);
+			width: calc(var(--reading-zone-width) - var(--reading-zone-diff));
 			padding: 2vh 1vw;
 
 			border: var(--dark-tone) solid 2px;		
@@ -312,6 +340,9 @@ strong{
   :root {
   	--aside-width: 50vw;
   	--reading-zone-width: 95vw;
+  }
+  #reading-zone-resize-container{
+  	display: none !important;
   }
 	.thread{
 		.thread-box{

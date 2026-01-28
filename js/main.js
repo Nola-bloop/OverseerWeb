@@ -126,6 +126,10 @@ function classicify(text, bg){
 					width: 93%;
 				}
 			}
+			*::-moz-selection, *::selection{
+				color:var(--light-tone);
+				background: var(--dark-tone);
+			}
 		}
 		@media screen and (max-width: 600px) {
 		  	:root {

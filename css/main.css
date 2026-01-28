@@ -33,7 +33,7 @@
 }
 *::-moz-selection, *::selection{
 	color:var(--shadow-tone);
-	background: var(--light-tone);
+	background-color: var(--light-tone);
 }
 
 body{
@@ -211,6 +211,9 @@ body{
 
 .message{
 	margin: 1em 0em;
+	*{
+		user-select: text;
+	}
 	.message-header{
 		display: flex;
 		align-items: center;

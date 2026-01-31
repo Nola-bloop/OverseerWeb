@@ -493,8 +493,10 @@ handleHold()
 
 
 //LOGIC =================>
+
 //load test values
 //CAMPAIGN = TEST_VALUES[0]
+
 if (URL_PARAMS["mode"]){
 	if (URL_PARAMS["mode"] === "book") classicify("#242424FF", "#FAEEE1FF")
 	else if (URL_PARAMS["mode"] === "book-dark") classicify("#FAEEE1FF", "#242424FF")

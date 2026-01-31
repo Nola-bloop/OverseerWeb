@@ -1,9 +1,11 @@
 let API_URL = "https://nolar-eclipse.ca:8443"
 
-let CAMPAIGN = localStorage.getItem("overseer-campaign")
+let GUILD_ID = localStorage.getItem("guild-id")
+console.log(GUILD_ID)
+let CAMPAIGN //do not set with local storage
 let CHAPTER //do not set
-let USER = localStorage.getItem("overseer-user")
-let PASSWORD = localStorage.getItem("overseer-password")
+let DC_USER_ID = localStorage.getItem("dc-user-id")
+let PASSWORD = localStorage.getItem("password")
 let AUTHENTICATED = false
 
 let FONTS = [
@@ -28,21 +30,24 @@ let FONTS = [
 ]
 
 let URL_PARAMS = {}
-const params_arr_strings = window.location.href.split('?')[1]?.split('&');
+const params_arr_strings = window.location.href.split('?')[1]?.split('&'); //split between "&" contents after "?"
 if (params_arr_strings)
 	for (let i = 0; i < params_arr_strings.length; i++) {
-	   let pair = params_arr_strings[i].split('=');
+	   let pair = params_arr_strings[i].split('='); //split already split content on '='
 	   URL_PARAMS[pair[0]] = pair[1]
 	}
 
-if(URL_PARAMS.guild){
-	let fetchUrl = `${API_URL}/clusterOutput/campaign/guild/${URL_PARAMS.guild}`
+if(URL_PARAMS.guild || GUILD_ID){
+	let guildId = URL_PARAMS.guild ?? GUILD_ID
+	console.log(guildId)
+	let fetchUrl = `${API_URL}/clusterOutput/campaign/guild/${guildId}`
 	const response = fetch(fetchUrl, {
 	  	method: "GET"
 	}).then(res => {
 		res.json().then(data =>{
 			if (data.dc_guild_id){
-				localStorage.setItem("overseer-campaign", data)
+				localStorage.setItem("guild-id", data.dc_guild_id)
+				GUILD_ID = data.dc_guild_id
 				CAMPAIGN = data
 				refreshCampaign()
 			}
@@ -56,16 +61,60 @@ if(URL_PARAMS.guild){
 
 
 // FUNCTIONS ================>
+let THEME_BOOK_LIGHT = {fg:"#242424FF", bg:"#FAEEE1FF"}
+let THEME_BOOK_DARK = {fg:"#FAEEE1FF", bg:"#242424FF"}
+
+let THEME_CACHE = {}
+let THEME_DARK = false
+
+function unclassicify(){
+	console.log("unclassicify")
+	let style = document.getElementById("book-style")
+	if (style){
+		style.remove()
+	}
+	for (let cssVar in THEME_CACHE){
+		console.log(`setting ${cssVar} to ${THEME_CACHE[cssVar]}`)
+		document.documentElement.style.setProperty(cssVar, THEME_CACHE[cssVar]);
+	}
+}
+
+function classicifyAlongToDarkBool(dontForce){
+	if (dontForce && !document.getElementById("book-style")) return
+	let style = document.getElementById("book-style")
+	if (style){
+		style.remove()
+	}
+	if (THEME_DARK)classicify(THEME_BOOK_DARK); 
+	else classicify(THEME_BOOK_LIGHT);
+}
+
 function classicify(text, bg){
 	let col1 = text ?? "black"
 	let col2 = bg ?? "white"
-	document.documentElement.style.setProperty('--dark-tone', col1);
+
+	if (typeof text == "object"){
+		col1 = text.fg ?? "black"
+		col2 = text.bg ?? "white"
+	}
+
+	let root = document.documentElement
+
+	if (!THEME_CACHE["--shadow-tone"]){
+		THEME_CACHE['--shadow-tone'] = getComputedStyle(root).getPropertyValue('--shadow-tone');
+		THEME_CACHE['--darker-tone'] = getComputedStyle(root).getPropertyValue('--darker-tone');
+		THEME_CACHE['--dark-tone'] = getComputedStyle(root).getPropertyValue('--dark-tone');
+		THEME_CACHE['--middle-tone'] = getComputedStyle(root).getPropertyValue('--middle-tone');
+		THEME_CACHE['--light-tone'] = getComputedStyle(root).getPropertyValue('--light-tone');
+	}
+
+	document.documentElement.style.setProperty('--shadow-tone', col2);
 	document.documentElement.style.setProperty('--darker-tone', col2);
+	document.documentElement.style.setProperty('--dark-tone', col1);
 	document.documentElement.style.setProperty('--middle-tone', col2);
 	document.documentElement.style.setProperty('--light-tone', col2);
-	document.documentElement.style.setProperty('--shadow-tone', col2);
 	document.getElementById("aside").classList.remove("hoverable")
-	let css = `<style id="classic-style">
+	let css = `<style id="book-style">
 	    :root {
 	    	--aside-width: 30vw !important;
 	    	--reading-zone-width: 95vw !important;
@@ -472,8 +521,6 @@ document.addEventListener("DOMContentLoaded", () => {
   WIDTH_CURSOR_ELEM = document.getElementById("reading-zone-resize-cursor");
   WIDTH_CONTAINER = document.getElementById("reading-zone-resize-container");
 
-  console.log("connected:", WIDTH_CONTAINER.isConnected); // should be true
-
   WIDTH_CONTAINER.addEventListener("mousedown", () => WIDTH_CURSOR_HELD = true);
   window.addEventListener("mouseup", () => WIDTH_CURSOR_HELD = false);
 
@@ -498,11 +545,11 @@ handleHold()
 //CAMPAIGN = TEST_VALUES[0]
 
 if (URL_PARAMS["mode"]){
-	if (URL_PARAMS["mode"] === "book") classicify("#242424FF", "#FAEEE1FF")
-	else if (URL_PARAMS["mode"] === "book-dark") classicify("#FAEEE1FF", "#242424FF")
+	if (URL_PARAMS["mode"] === "book") classicify(THEME_BOOK_LIGHT)
+	else if (URL_PARAMS["mode"] === "book-dark") classicify(THEME_BOOK_DARK)
 }
 
-if (USER && PASSWORD) AUTHENTICATED = authenticate(USER.dc_user_id, PASSWORD) //async
+if (DC_USER_ID && PASSWORD) AUTHENTICATED = authenticate(DC_USER_ID, PASSWORD) //async
 
 //set accurate page title if needed.
 if (CAMPAIGN){

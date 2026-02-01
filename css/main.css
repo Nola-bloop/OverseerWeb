@@ -155,6 +155,20 @@ body{
 					padding: 0.1em 0.4em;
 				}
 			}
+			#aside-jump-to{
+				align-self: flex-start;
+				margin-left: 1vw;
+				.jump{
+					margin-left: 1vw;
+					cursor: pointer;
+
+					transition: margin;
+					transition-duration: 250ms;
+				}
+				.jump:hover{
+					margin-left: 2vw;
+				}
+			}
 		}
 	}
 	aside.selected {

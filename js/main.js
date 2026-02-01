@@ -418,7 +418,6 @@ function addMessage(message, i){
 	window.addEventListener('scroll', loadThisMessageWhenInView);
 }
 
-
 async function refreshChapter(){
 	if (!CHAPTER) return
 	let chapterTitles = document.getElementsByClassName("chapter-name")
@@ -448,6 +447,29 @@ async function refreshChapter(){
 		removeDupMessages(CHAPTER.messages[i].id)
 	}
 	window.dispatchEvent(new CustomEvent('scroll'))
+
+	//update jump-to's
+	let jumpContainer = document.getElementById("aside-jump-to-container")
+	jumpContainer.innerHTML = ""
+
+	let jumps = document.querySelectorAll(".thread, .beacon")
+	
+	for(const jump of jumps){
+		let name = "unk. (error)"
+		let elemId = jump.id
+		if (jump.classList.contains("thread")){
+			//is thread
+			let nameElem = jump.querySelector(".thread-header")
+			name = nameElem.innerText.substring(6, nameElem.innerText.length-6) //for "* * * THREAD_NAME * * *"
+		}else if (jump.classList.contains("beacon")){
+			//is beacon
+			name = jump.innerText
+		}
+
+		jumpContainer.innerHTML += `<div class="jump" onclick="document.getElementById('${elemId}').scrollIntoView({block: 'start'})">
+			<p>- ${name}</p>
+		</div>`
+	}
 }
 function removeDupMessages(id){
 	let messages = document.getElementById("message-"+id)
